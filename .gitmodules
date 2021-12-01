@@ -1,0 +1,3 @@
+[submodule "MinecraftYoutube/vendor/GLFW"]
+	path = MinecraftYoutube/vendor/GLFW
+	url = https://github.com/glfw/glfw
