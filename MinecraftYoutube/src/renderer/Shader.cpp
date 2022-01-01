@@ -2,74 +2,102 @@
 
 namespace MinecraftClone
 {
-    const char* vertexShaderSource = R"(
-#version 460 core
-layout (location = 0) in vec4 aColor;
-layout (location = 1) in vec3 aPosition;
+	// Forward Declarations
+	static std::string ReadFile(const char* filepath);
 
-out vec4 fColor;
+	bool Shader::compile(ShaderType type, const char* shaderFilepath)
+	{
+		// Copy the shader filepath into a string
+		int strLength = (int)std::strlen(shaderFilepath);
+		filepath = (char*)g_memory_allocate(sizeof(char) * (strLength + 1));
+		std::strcpy(filepath, shaderFilepath);
+		filepath[strLength] = '\0';
+		g_logger_info("Compiling shader: %s", filepath);
 
-void main()
-{
-    fColor = aColor;
-    gl_Position = vec4(aPosition, 1.0);
-})";
+		// Read the shader source code from the file
+		std::string shaderSourceCode = ReadFile(filepath);
 
-    const char* fragmentShaderSource = R"(
-#version 460 core
-out vec4 FragColor;
+		GLenum shaderType = toGlShaderType(type);
 
-in vec4 fColor;
+		// Create an empty shader handle
+		shaderId = glCreateShader(shaderType);
 
-void main()
-{
-    FragColor = fColor;
-})";
+		// Send the shader source code to GL
+		const GLchar* sourceCStr = shaderSourceCode.c_str();
+		glShaderSource(shaderId, 1, &sourceCStr, 0);
 
-    void Shader::compile()
-    {
-        // Adapted from https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/2.2.hello_triangle_indexed/hello_triangle_indexed.cpp
-        uint32 vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-        glCompileShader(vertexShader);
-        // check for shader compile errors
-        int success;
-        char infoLog[512];
-        glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-        if (!success)
-        {
-            glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-            printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n '%s'", infoLog);
-        }
-        // fragment shader
-        uint32 fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-        glCompileShader(fragmentShader);
-        // check for shader compile errors
-        glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-        if (!success)
-        {
-            glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-            printf("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n '%s'", infoLog);
-        }
-        // link shaders
-        programId = glCreateProgram();
-        glAttachShader(programId, vertexShader);
-        glAttachShader(programId, fragmentShader);
-        glLinkProgram(programId);
-        // check for linking errors
-        glGetProgramiv(programId, GL_LINK_STATUS, &success);
-        if (!success)
-        {
-            glGetProgramInfoLog(programId, 512, NULL, infoLog);
-            printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n '%s'", infoLog);
-        }
-        glDeleteShader(vertexShader);
-        glDeleteShader(fragmentShader);
-    }
+		// Compile the shader
+		glCompileShader(shaderId);
 
-    void Shader::bind()
-    {
-        glUseProgram(programId);
-    }
+		// Check if the compilation succeeded
+		GLint isCompiled = 0;
+		glGetShaderiv(shaderId, GL_COMPILE_STATUS, &isCompiled);
+		if (isCompiled == GL_FALSE)
+		{
+			// If compilation failed, find out why and log the error
+			GLint maxLength = 0;
+			glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &maxLength);
+
+			// The maxLength includes the NULL character
+			std::vector<GLchar> infoLog(maxLength);
+			glGetShaderInfoLog(shaderId, maxLength, &maxLength, &infoLog[0]);
+
+			// We don't need the shader anymore if compilation failed
+			glDeleteShader(shaderId);
+
+			g_logger_error("Shader Compilation failed: \n%s", infoLog.data());
+
+			shaderId = UINT32_MAX;
+			return false;
+		}
+		
+		return true;
+	}
+
+	void Shader::destroy()
+	{
+		if (shaderId != UINT32_MAX)
+		{
+			glDeleteShader(shaderId);
+			shaderId = UINT32_MAX;
+		}
+
+		if (filepath != nullptr)
+		{
+			g_memory_free(filepath);
+			filepath = nullptr;
+		}
+	}
+
+
+	GLenum Shader::toGlShaderType(ShaderType type)
+	{
+		switch (type)
+		{
+		case ShaderType::Vertex:
+			return GL_VERTEX_SHADER;
+		case ShaderType::Fragment:
+			return GL_FRAGMENT_SHADER;
+		}
+	}
+
+	static std::string ReadFile(const char* filepath)
+	{
+		std::string result;
+		std::ifstream in(filepath, std::ios::in | std::ios::binary);
+		if (in)
+		{
+			in.seekg(0, std::ios::end);
+			result.resize(in.tellg());
+			in.seekg(0, std::ios::beg);
+			in.read(&result[0], result.size());
+			in.close();
+		}
+		else
+		{
+			g_logger_error("Could not open file: '%s'", filepath);
+		}
+
+		return result;
+	}
 }

@@ -1,7 +1,7 @@
 #include "core.h"
 #include "core/Window.h"
 #include "core/Input.h"
-#include "renderer/Shader.h"
+#include "renderer/ShaderProgram.h"
 
 using namespace MinecraftClone;
 
@@ -9,7 +9,7 @@ const int windowWidth = 1920;
 const int windowHeight = 1080;
 const char* windowTitle = "OpenGL Template";
 
-static Shader shader;
+static ShaderProgram shaderProgram;
 
 int exitWithError(const char* msg)
 {
@@ -58,7 +58,7 @@ void setupChallenge1()
 }
 
 void drawChallenge1()
-{	
+{
 	glBindVertexArray(challenge1Vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
@@ -365,10 +365,10 @@ int main()
 	}
 
 	// Make sure not to call any OpenGL functions until *after* we initialize our function loader
-	shader.compile();
+	shaderProgram.compileAndLink("assets/shaders/vertex/basic.glsl", "assets/shaders/fragment/basic.glsl");
 
 	glViewport(0, 0, windowWidth, windowHeight);
-	shader.bind();
+	shaderProgram.bind();
 	while (!glfwWindowShouldClose(window->nativeWindow))
 	{
 		glClearColor(0.266f, 0.466f, 0.698f, 1.0f);
@@ -452,4 +452,3 @@ int main()
 	glfwTerminate();
 	return 0;
 }
-

@@ -37,13 +37,18 @@ project "MinecraftYoutube"
         "MinecraftYoutube/vendor/GLFW/src/null**.c",
         "MinecraftYoutube/vendor/glad/include/glad/glad.h",
         "MinecraftYoutube/vendor/glad/include/glad/KHR/khrplatform.h",
-		"MinecraftYoutube/vendor/glad/src/glad.c"
+		"MinecraftYoutube/vendor/glad/src/glad.c",
+        "MinecraftYoutube/vendor/glm/glm/**.hpp",
+		"MinecraftYoutube/vendor/glm/glm/**.inl",
     }
 
     includedirs {
         "MinecraftYoutube/include",
         "MinecraftYoutube/vendor/GLFW/include",
-        "MinecraftYoutube/vendor/glad/include"
+        "MinecraftYoutube/vendor/glad/include",
+        "MinecraftYoutube/vendor/glm/",
+        "MinecraftYoutube/vendor/robinHoodHashing/src/include",
+        "MinecraftYoutube/vendor/cppUtils/single_include",
     }
 
     filter "system:windows"

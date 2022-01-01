@@ -1,3 +1,12 @@
 [submodule "MinecraftYoutube/vendor/GLFW"]
 	path = MinecraftYoutube/vendor/GLFW
 	url = https://github.com/glfw/glfw
+[submodule "MinecraftYoutube/vendor/glm"]
+	path = MinecraftYoutube/vendor/glm
+	url = https://github.com/g-truc/glm
+[submodule "MinecraftYoutube/vendor/robinHoodHashing"]
+	path = MinecraftYoutube/vendor/robinHoodHashing
+	url = https://github.com/martinus/robin-hood-hashing
+[submodule "MinecraftYoutube/vendor/cppUtils"]
+	path = MinecraftYoutube/vendor/cppUtils
+	url = https://github.com/ambrosiogabe/CppUtils
