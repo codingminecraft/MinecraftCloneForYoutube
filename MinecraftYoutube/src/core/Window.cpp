@@ -3,6 +3,14 @@
 
 namespace MinecraftClone
 {
+	static void resizeCallback(GLFWwindow* nativeWindow, int newWidth, int newHeight)
+	{
+		Window* window = (Window*)glfwGetWindowUserPointer(nativeWindow);
+		window->windowWidth = newWidth;
+		window->windowHeight = newHeight;
+		glViewport(0, 0, newWidth, newHeight);
+	}
+
 	void Window::installMainCallbacks()
 	{
 		if (nativeWindow != nullptr)
@@ -10,6 +18,7 @@ namespace MinecraftClone
 			glfwSetKeyCallback(nativeWindow, Input::keyCallback);
 			glfwSetCursorPosCallback(nativeWindow, Input::mouseCallback);
 			glfwSetMouseButtonCallback(nativeWindow, Input::mouseButtonCallback);
+			glfwSetWindowSizeCallback(nativeWindow, resizeCallback);
 		}
 	}
 
@@ -38,6 +47,10 @@ namespace MinecraftClone
 			return nullptr;
 		}
 		glfwMakeContextCurrent(res->nativeWindow);
+		glfwSetWindowUserPointer(res->nativeWindow, (void*)res);
+
+		res->windowWidth = width;
+		res->windowHeight = height;
 
 		return res;
 	}

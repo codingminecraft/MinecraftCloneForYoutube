@@ -3,9 +3,11 @@
 
 out vec4 FragColor;
 
-in vec4 fColor;
+layout (location = 0) in vec2 fragCoord;
+
+uniform vec3 uColor;
 
 void main()
 {
-    FragColor = fColor;
+    FragColor = vec4(uColor, 1.0);
 }

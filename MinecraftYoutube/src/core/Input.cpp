@@ -15,7 +15,7 @@ namespace MinecraftClone
 		{
 			if (key >= 0 && key < GLFW_KEY_LAST)
 			{
-				keyPressedData[key] = action == GLFW_PRESS;
+				keyPressedData[key] = (action == GLFW_PRESS) || (action == GLFW_REPEAT);
 			}
 		}
 

@@ -63,7 +63,7 @@ namespace MinecraftClone
 
 		// Log errors if the linking failed
 		GLint isLinked = GL_FALSE;
-		glGetProgramiv(program, GL_LINK_STATUS, (int*)&isLinked);
+		glGetProgramiv(program, GL_LINK_STATUS, &isLinked);
 		if (isLinked == GL_FALSE)
 		{
 			GLint maxLength = 0;
@@ -82,6 +82,12 @@ namespace MinecraftClone
 			programId = UINT32_MAX;
 			return false;
 		}
+
+		// Always detach shaders after a successful link and destroy them since we don't need them anymore
+		glDetachShader(program, vertexShader.shaderId);
+		glDetachShader(program, fragmentShader.shaderId);
+		vertexShader.destroy();
+		fragmentShader.destroy();
 
 		// If linking succeeded, get all the active uniforms and store them in our map of uniform variable locations
 		int numUniforms;
@@ -108,12 +114,6 @@ namespace MinecraftClone
 
 			g_memory_free(charBuffer);
 		}
-
-		// Always detach shaders after a successful link and destroy them since we don't need them anymore
-		glDetachShader(program, vertexShader.shaderId);
-		glDetachShader(program, fragmentShader.shaderId);
-		vertexShader.destroy();
-		fragmentShader.destroy();
 
 		programId = program;
 		g_logger_info("Shader compilation and linking succeeded <Vertex:%s>:<Fragment:%s>", vertexShaderFile, fragmentShaderFile);
