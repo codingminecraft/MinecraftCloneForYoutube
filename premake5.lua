@@ -73,14 +73,42 @@ project "MinecraftYoutube"
             "_GLFW_WIN32",
             "_CRT_SECURE_NO_WARNINGS"
         }
+    filter "system:linux"
+        links { "dl", "pthread" }
+        systemversion "latest"
+
+        files {
+            "MinecraftYoutube/vendor/GLFW/src/x11_init.c",
+            "MinecraftYoutube/vendor/GLFW/src/linux_joystick.c",
+            "MinecraftYoutube/vendor/GLFW/src/x11_monitor.c",
+            "MinecraftYoutube/vendor/GLFW/src/posix_time.c",
+            "MinecraftYoutube/vendor/GLFW/src/posix_thread.c",
+            "MinecraftYoutube/vendor/GLFW/src/x11_window.c",
+            "MinecraftYoutube/vendor/GLFW/src/glx_context.c",
+            "MinecraftYoutube/vendor/GLFW/src/egl_context.c",
+            "MinecraftYoutube/vendor/GLFW/src/osmesa_context.c",
+            "MinecraftYoutube/vendor/GLFW/src/posix_module.c",
+            "MinecraftYoutube/vendor/GLFW/src/xkb_unicode.c",
+            "MinecraftYoutube/vendor/GLFW/src/x11_platform.h"
+        }
+
+        defines {
+            "_GLFW_X11"
+        }
+
+    filter { "system:windows", "configurations:Debug" }
+        buildoptions "/MTd"
+    filter { "system:linux", "configurations:Debug" }
+        buildoptions "-g"
 
     filter { "configurations:Debug" }
-        buildoptions "/MTd"
         runtime "Debug"
         symbols "on"
 
-    filter { "configurations:Release" }
+    filter { "system:windows", "configurations:Release" }
         buildoptions "/MT"
+
+    filter { "configurations:Release" }
         runtime "Release"
         optimize "on"
 
