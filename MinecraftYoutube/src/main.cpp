@@ -28,9 +28,18 @@ void GLAPIENTRY errorMessageCallback(
 	}
 }
 
+void glfwErrorCallback(int error, const char* description)
+{
+	g_logger_error("GLFW CALLBACK: **GLFW ERROR** Error: %d description: %s\n", error, description);
+}
+
 int main()
 {
-	glfwInit();
+	glfwSetErrorCallback(glfwErrorCallback);
+	if(!glfwInit()){
+		g_logger_error("GLFW failed to initialize");
+		return -1;
+	}
 
 	Window* window = Window::createWindow(windowWidth, windowHeight, windowTitle);
 	if (window == nullptr)
