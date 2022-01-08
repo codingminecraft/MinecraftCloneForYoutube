@@ -18,6 +18,10 @@ namespace MinecraftClone
 		std::string shaderSourceCode = ReadFile(filepath);
 
 		GLenum shaderType = toGlShaderType(type);
+		if (shaderType == GL_INVALID_ENUM) {
+			g_logger_error("ShaderType is unknown");
+			return false;
+		}
 
 		// Create an empty shader handle
 		shaderId = glCreateShader(shaderType);
@@ -79,6 +83,7 @@ namespace MinecraftClone
 		case ShaderType::Fragment:
 			return GL_FRAGMENT_SHADER;
 		}
+		return GL_INVALID_ENUM;
 	}
 
 	static std::string ReadFile(const char* filepath)
