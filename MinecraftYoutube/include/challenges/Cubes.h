@@ -1,11 +1,11 @@
-#ifndef SHADER_EXAMPLES_H
-#define SHADER_EXAMPLES_H
+#ifndef SQUARE_PLAYER_H
+#define SQUARE_PLAYER_H
 
 namespace MinecraftClone
 {
 	struct Window;
 
-	namespace ShaderExamples
+	namespace Cubes
 	{
 		void init(const Window& window);
 		void destroy();

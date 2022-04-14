@@ -12,6 +12,7 @@
 #include <vector>
 #include <array>
 #include <fstream>
+#include <filesystem>
 
 // GLM stuff
 #define GLM_EXT_INCLUDED
@@ -36,6 +37,9 @@
 
 // My libraries
 #include <cppUtils/cppUtils.hpp>
+
+// Stb libraries
+#include <stb_image.h>
 
 typedef uint64_t uint64;
 typedef uint32_t uint32;

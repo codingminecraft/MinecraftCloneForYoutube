@@ -51,3 +51,16 @@ Challenges:
     * Send these normals to the fragment shader.
     * Use an algorithm called Phong shading to simulate a light source. You can find an extensive tutorial about this here: https://learnopengl.com/Lighting/Basic-Lighting 
 
+# Episode 4: Textures
+
+1. A cube consists of 12 triangles and 8 unique vertices. Create a vao that consists of the data for a default cube using one attribute: a position attribute consisting of 3 floats. 
+2. Create a 3D perspective matrix for your projection with an FOV of 70 degrees, and a z near plane of 0.1 meters and a z far plane of 10,000 meters.
+3. Create a view matrix that is located at (7, 5, 7) and looking at (0, 0, 0).
+4. Draw several cubes in your scene centered around the origin using the default cube vao from step 1, the perspective matrix from step 2, and the view matrix from step 3.
+5. Rotate your camera around the cubes in a circular motion. This can be done using the sin and cos functions which allow us to plot the path of a circle. The general formula is position = (sin(theta), 5, cos(theta)).
+6. Create texture coordinates for each vertex of your cube, where the bottom-left of each quad is the bottom-left of the texture coordinate. 
+7. Add a vertex attribute to your vertices: a texture coordinate attribute consisting of two floats. <small>NOTE: You will now need 36 unique vertices since texture coordinates cannot be shared among the corners.</small>
+8. Verify that your texture coordinates are correct by outputting the texture coordinates as a color in your fragment shader.
+9. Create an assets directory and fill it with a few textures you would like to use. Then loop through each file in that directory and create a texture in your code for each file in that directory. Use stb to read the image data.
+10. Randomize the cube positions and textures and revel in the glory of your textured cubes!
+

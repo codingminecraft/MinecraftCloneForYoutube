@@ -49,6 +49,7 @@ project "MinecraftYoutube"
         "MinecraftYoutube/vendor/glm/",
         "MinecraftYoutube/vendor/robinHoodHashing/src/include",
         "MinecraftYoutube/vendor/cppUtils/single_include",
+        "MinecraftYouTube/vendor/stb"
     }
 
     filter "system:windows"

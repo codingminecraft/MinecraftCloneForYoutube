@@ -1,10 +1,8 @@
 #include "core.h"
 #include "core/Window.h"
 #include "core/Input.h"
+#include "challenges/Cubes.h"
 #include "renderer/ShaderProgram.h"
-#include "challenges/SquarePlayer.h"
-#include "challenges/ShaderExamples.h"
-#include "challenges/TerrainShader.h"
 
 using namespace MinecraftClone;
 
@@ -62,15 +60,14 @@ int main()
 	glDebugMessageCallback(errorMessageCallback, 0);
 
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
 	glViewport(0, 0, windowWidth, windowHeight);
 
 	float dt = 0.016f;
 	float frameStart = 0.0f;
 
-	SquarePlayer::init(*window);
-	ShaderExamples::init(*window);
-	TerrainShader::init(*window);
+	Cubes::init(*window);
 
 	bool showPlayer = false;
 	bool showTerrain = false;
@@ -84,44 +81,13 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		keyDebounce -= dt;
 
-		if (showPlayer)
-		{
-			SquarePlayer::update(dt);
-			if (Input::isKeyDown(GLFW_KEY_RIGHT) && keyDebounce < 0.0f)
-			{
-				showPlayer = false;
-				showTerrain = true;
-				keyDebounce = 0.3f;
-			}
-		}
-		else if (showTerrain)
-		{
-			TerrainShader::update(dt);
-			if (Input::isKeyDown(GLFW_KEY_RIGHT) && keyDebounce < 0.0f)
-			{
-				showPlayer = false;
-				showTerrain = false;
-				keyDebounce = 0.3f;
-			}
-		}
-		else
-		{
-			ShaderExamples::update(dt);
-			if (Input::isKeyDown(GLFW_KEY_RIGHT) && keyDebounce < 0.0f)
-			{
-				showPlayer = true;
-				showTerrain = false;
-				keyDebounce = 0.3f;
-			}
-		}
+		Cubes::update(dt);
 
 		glfwSwapBuffers(window->nativeWindow);
 		glfwPollEvents();
 	}
 
-	SquarePlayer::destroy();
-	ShaderExamples::destroy();
-	TerrainShader::destroy();
+	Cubes::destroy();
 
 	Window::freeWindow(window);
 	glfwTerminate();
