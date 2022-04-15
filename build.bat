@@ -24,6 +24,7 @@ echo   vs2013            Generate Visual Studio 2013 project files
 echo   vs2015            Generate Visual Studio 2015 project files
 echo   vs2017            Generate Visual Studio 2017 project files
 echo   vs2019            Generate Visual Studio 2019 project files
+echo   vs2022            Generate Visual Studio 2022 project files
 echo   xcode4            Generate Apple Xcode 4 project files
 GOTO Done
 
