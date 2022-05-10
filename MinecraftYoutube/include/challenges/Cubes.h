@@ -4,13 +4,14 @@
 namespace MinecraftClone
 {
 	struct Window;
+	struct Camera;
 
 	namespace Cubes
 	{
-		void init(const Window& window);
+		void init();
 		void destroy();
 
-		void update(float dt);
+		void update(const Camera& camera);
 	}
 }
 

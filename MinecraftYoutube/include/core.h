@@ -31,6 +31,8 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/euler_angles.hpp>
+#include <glm/gtc/matrix_access.hpp>
 
 // Use this for hash map and hash sets instead of the crappy std lib
 #include <robin_hood.h>
