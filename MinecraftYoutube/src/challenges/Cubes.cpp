@@ -2,7 +2,9 @@
 #include "core.h"
 #include "core/Input.h"
 #include "core/Window.h"
+#include "core/Application.h"
 #include "renderer/ShaderProgram.h"
+#include "renderer/Camera.h"
 
 namespace MinecraftClone
 {
@@ -97,8 +99,6 @@ namespace MinecraftClone
 		static Texture normalTexture;
 		static std::vector<glm::vec3> cubePositions;
 		static std::vector<int> cubeTextures;
-
-		static glm::mat4 projection;
 
 		void createDefaultCube()
 		{
@@ -243,7 +243,7 @@ namespace MinecraftClone
 			glDeleteTextures(1, &texture.textureId);
 		}
 
-		void init(const Window& window)
+		void init()
 		{
 			if (!texturedCubeShader.compileAndLink("assets/shaders/vertex/cube.glsl", "assets/shaders/fragment/cube.glsl"))
 			{
@@ -252,12 +252,6 @@ namespace MinecraftClone
 			}
 
 			createDefaultCube();
-
-			float windowAspect = ((float)window.windowWidth / (float)window.windowHeight);
-			float fov = 70.0f;
-			float zNear = 0.1f;
-			float zFar = 10'000.0f;
-			projection = glm::perspective(fov, windowAspect, zNear, zFar);
 
 			for (auto& filepath : std::filesystem::directory_iterator("assets/images"))
 			{
@@ -299,22 +293,12 @@ namespace MinecraftClone
 			}
 		}
 
-		void update(float dt)
+		void update(const Camera& camera)
 		{
 			texturedCubeShader.bind();
 
-			// Rotate the eye a little bit every frame
-			static glm::vec3 eye = glm::vec3();
-			static float eyeRotation = 45.0f;
-			if (!Input::isKeyDown(GLFW_KEY_SPACE)) 
-				eyeRotation += 30.0f * dt;
-			eye = glm::vec3(glm::sin(glm::radians(eyeRotation)) * 7.0f, 5.0f, glm::cos(glm::radians(eyeRotation)) * 7.0f);
-
-			glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);
-			glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-			glm::mat4 view = glm::lookAt(eye, center, up);
-			texturedCubeShader.uploadMat4("uView", view);
-			texturedCubeShader.uploadMat4("uProjection", projection);
+			texturedCubeShader.uploadMat4("uView", camera.view);
+			texturedCubeShader.uploadMat4("uProjection", camera.projection);
 
 			// NOTE: This texture is not required for the challenges
 			glActiveTexture(GL_TEXTURE0 + 1);

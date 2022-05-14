@@ -48,6 +48,7 @@ namespace MinecraftClone
 		}
 		glfwMakeContextCurrent(res->nativeWindow);
 		glfwSetWindowUserPointer(res->nativeWindow, (void*)res);
+		glfwSwapInterval(1);
 
 		res->windowWidth = width;
 		res->windowHeight = height;
