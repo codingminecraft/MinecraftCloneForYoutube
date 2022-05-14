@@ -9,7 +9,6 @@ namespace MinecraftClone
 		glm::mat4 rotationMatrix = glm::toMat4(orientation);
 		right = glm::row(rotationMatrix, 0);
 		up = glm::row(rotationMatrix, 1);
-		glm::vec3 oldForward = forward;
 		forward = glm::row(rotationMatrix, 2);
 
 		glm::mat4 translationMatrix = glm::transpose(glm::mat4(

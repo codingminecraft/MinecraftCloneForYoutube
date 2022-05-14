@@ -2,6 +2,8 @@
 #include "gameplay/CharacterController.h"
 #include "core.h"
 #include "core/Input.h"
+#include "core/Application.h"
+#include "core/Window.h"
 
 namespace MinecraftClone
 {

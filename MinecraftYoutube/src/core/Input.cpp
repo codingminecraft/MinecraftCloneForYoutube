@@ -40,8 +40,26 @@ namespace MinecraftClone
 				firstFrame = false;
 			}
 
-			deltaMouseX = (float)xpos - lastMouseX;
-			deltaMouseY = lastMouseY - (float)ypos;
+			// NOTE: This stuff is just to prevent the camera from jumping if the mouse cursor
+			// moves off the window and then back onto the window at a different location
+			int windowWidth;
+			int windowHeight;
+			glfwGetWindowSize(window, &windowWidth, &windowHeight);
+			bool cursorLocked = glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
+			if (!cursorLocked && 
+				(mouseX >= (float)windowWidth || mouseX <= 0.0f || mouseY >= (float)windowHeight || mouseY <= 0.0f))
+			{
+				// NOTE: If the mouse just came from off the screen and the cursor is not locked
+				// then don't count that as a real delta movement
+				deltaMouseX = 0.0f;
+				deltaMouseY = 0.0f;
+			}
+			else
+			{
+				deltaMouseX = ((float)xpos - lastMouseX);
+				deltaMouseY = (lastMouseY - (float)ypos);
+			}
+
 			lastMouseX = (float)xpos;
 			lastMouseY = (float)ypos;
 		}

@@ -12,7 +12,6 @@ namespace MinecraftClone
 
 		glm::vec3 movementAxis;
 		glm::vec3 viewAxis;
-		glm::vec3 _targetViewAxis;
 		bool isRunning;
 		bool lockedToCamera;
 	};

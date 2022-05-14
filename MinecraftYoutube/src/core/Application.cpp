@@ -105,6 +105,7 @@ namespace MinecraftClone
 			{
 				deltaTime = (float)(glfwGetTime() - (double)frameStart);
 				frameStart = (float)glfwGetTime();
+				glfwPollEvents();
 
 				glClearColor(39.0f / 255.0f, 40.0f / 255.0f, 34.0f / 255.0f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -129,7 +130,6 @@ namespace MinecraftClone
 				glfwSwapBuffers(window->nativeWindow);
 
 				Input::endFrame();
-				glfwPollEvents();
 			}
 		}
 
